@@ -1,5 +1,5 @@
 {
-  description = "CrossPatch nixified";
+  description = "Crosspatch nixified";
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ./nix;
 
   inputs = {
