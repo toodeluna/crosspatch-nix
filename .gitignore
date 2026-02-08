@@ -1,0 +1,24 @@
+# Editor files
+*.code-workspace
+.idea
+.vs
+.vscode
+
+# Nix outputs
+result
+result-*
+
+# Build outputs
+build
+dist
+
+# Temporary files
+temp
+tmp
+
+# Environment files
+.direnv
+*.env
+
+# System files
+.DS_Store
