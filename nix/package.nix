@@ -5,6 +5,7 @@
   ...
 }:
 let
+  name = "crosspatch";
   version = "1.1.5";
 in
 {
@@ -19,20 +20,35 @@ in
         pythonPackages.rarfile
         pythonPackages.requests
       ]);
-    in
-    {
+
       # TODO: Make the parser work for this package. It seems to work fine without it
       # but it'd be nice if it didn't throw an error.
-      packages.default = pkgs.writeShellApplication {
-        name = "crosspatch";
+      script = pkgs.writeShellApplication {
+        inherit name;
         runtimeInputs = [ python ];
         text = ''python "${inputs.crosspatch}/src/CrossPatch.py"'';
+      };
+
+      desktopItem = pkgs.makeDesktopItem {
+        inherit name;
+        desktopName = "Crosspatch";
+        exec = lib.getExe script;
+      };
+    in
+    {
+      packages.default = pkgs.symlinkJoin {
+        inherit name;
         meta.description = "Mod loader for Sonic Racing Crossworlds";
+
+        paths = [
+          script
+          desktopItem
+        ];
       };
 
       packages.parser = pkgs.buildDotnetModule {
         inherit version;
-        pname = "crosspatch-parser";
+        pname = "${name}-parser";
         src = "${inputs.crosspatch}/tools/CrossPatchParser";
         nugetDeps = "${self}/dependencies/nuget-dependencies.json";
       };
